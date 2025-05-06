@@ -17,17 +17,17 @@ jobs:
       # 2. Android SDK setup
       - uses: android-actions/setup-android@v3
 
-      # 3. Flutter (with compatible Dart SDK)
+      # 3. Flutter with compatible Dart SDK (3.3.0+)
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.16.0'  # Dart 3.3.0
+          flutter-version: '3.22.0'  # Dart 3.4.0
           channel: 'stable'
 
-      # 4. Build
+      # 4. Build steps
       - run: flutter pub get
       - run: flutter build apk --release
 
-      # 5. Upload APK
+      # 5. Upload artifact
       - uses: actions/upload-artifact@v4
         with:
           name: app-release.apk
