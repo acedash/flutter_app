@@ -1,0 +1,26 @@
+name: Build Flutter APK
+
+on:
+  push:
+    branches: [ main ]  # Runs when you push to main branch
+  workflow_dispatch:    # Allows manual triggering
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Uses a free Linux VM
+
+    steps:
+      - uses: actions/checkout@v4  # Checks out your code
+
+      - uses: subosito/flutter-action@v2  # Sets up Flutter
+        with:
+          channel: 'stable'  # Uses stable Flutter version
+
+      - run: flutter pub get  # Installs dependencies
+      
+      - run: flutter build apk --release  # Builds the APK
+
+      - uses: actions/upload-artifact@v4  # Saves the APK
+        with:
+          name: app-release.apk
+          path: build/app/outputs/flutter-apk/app-release.apk
