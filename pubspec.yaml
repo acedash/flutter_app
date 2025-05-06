@@ -67,7 +67,7 @@ flutter:
     - assets/svg/
     - assets/language/
     - assets/
- fonts:
+  fonts:
     - family: Poppins
       fonts:
         - asset: assets/font/Poppins-Light.ttf
@@ -81,6 +81,5 @@ flutter:
         - asset: assets/font/Poppins-Bold.ttf
           weight: 700
 
-# ADD THIS EXACTLY HERE - at root level with proper spacing
 dependency_overrides:
   google_sign_in_android: 6.1.31
