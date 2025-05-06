@@ -20,7 +20,7 @@ jobs:
           build-tools-version: '35.0.0'
           platform-version: '35'
 
-      # 3. Setup Flutter
+      # 3. Setup Flutter (using stable channel)
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.22.0'
@@ -30,15 +30,21 @@ jobs:
       - run: yes | sdkmanager --licenses
       - run: flutter doctor --android-licenses
 
-      # 5. Upgrade dependencies and clean (added these steps)
-      - run: flutter pub upgrade --major-versions
-      - run: flutter clean
-
-      # 6. Build
+      # 5. Get dependencies (without major upgrades)
       - run: flutter pub get
+
+      # 6. Apply country_code_picker fix
+      - name: Patch SelectionDialog
+        run: |
+          sed -i "s/SelectionDialog(/SelectionDialog(hideHeaderText: false, headerAlignment: Alignment.center, /g" lib/features/auth/widgets/country_code_picker_widget.dart
+          sed -i "s/elements,/elements: elements,/g" lib/features/auth/widgets/country_code_picker_widget.dart
+          sed -i "s/favoriteElements,/favoriteElements: favoriteElements,/g" lib/features/auth/widgets/country_code_picker_widget.dart
+
+      # 7. Build
+      - run: flutter clean
       - run: flutter build apk --release
 
-      # 7. Upload APK
+      # 8. Upload APK
       - uses: actions/upload-artifact@v4
         with:
           name: app-release.apk
