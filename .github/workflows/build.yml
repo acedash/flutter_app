@@ -8,23 +8,24 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # ✅ Use Java 17 (required by Android SDK)
+      # 1. Install Java 17 (MUST for Android SDK)
       - uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
-          java-version: '17'  # Changed from 11 to 17
+          distribution: 'temurin'
+          java-version: '17'
 
-      # ✅ Use the OFFICIAL Android setup (google-github-actions)
-      - uses: google-github-actions/setup-android@v1
+      # 2. PROPER Android setup (official action)
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
 
+      # 3. Flutter setup
       - uses: subosito/flutter-action@v2
         with:
+          flutter-version: '3.13.9'  # Explicit version
           channel: 'stable'
 
+      # 4. Build steps
       - run: flutter pub get
       - run: flutter build apk --release
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: app-release.apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+      # 5
