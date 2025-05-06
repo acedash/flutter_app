@@ -308,6 +308,7 @@ class CountryCodePickerWidgetState extends State<CountryCodePickerWidget> {
             hideSearch: widget.hideSearch,
             closeIcon: widget.closeIcon,
             flagDecoration: widget.flagDecoration,
+             hideHeaderText: false
           ),
         ),
       ),
