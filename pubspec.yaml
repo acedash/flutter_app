@@ -60,6 +60,8 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: 4.0.1
 
+# ... (keep all your existing configuration above)
+
 flutter:
   uses-material-design: true
   assets:
@@ -80,5 +82,7 @@ flutter:
           weight: 600
         - asset: assets/font/Poppins-Bold.ttf
           weight: 700
-          dependency_overrides:
-  google_sign_in_android: 6.1.31  # Matches google_sign_in 6.2.1
+
+# Add dependency_overrides at the ROOT level (not under flutter)
+dependency_overrides:
+  google_sign_in_android: 6.1.31
