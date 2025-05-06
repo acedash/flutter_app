@@ -20,21 +20,20 @@ jobs:
           build-tools-version: '34.0.0'
           platform-version: '34'
 
-      # 3. Setup Flutter
+      # 3. Setup Flutter with exact version
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.0'
+          flutter-version: '3.22.0'  # Includes Dart 3.4.0
           channel: 'stable'
 
-      # 4. Accept licenses
-      - run: yes | sdkmanager --licenses
-      - run: flutter doctor --android-licenses
+      # 4. Clean and reset
+      - run: flutter clean
+      - run: dart pub cache repair
 
       # 5. Get dependencies
       - run: flutter pub get
 
       # 6. Build
-      - run: flutter clean
       - run: flutter build apk --release
 
       # 7. Upload APK
