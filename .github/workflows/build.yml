@@ -14,13 +14,11 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      # 2. Setup Android SDK with correct versions
+      # 2. Setup Android SDK
       - uses: android-actions/setup-android@v3
         with:
           build-tools-version: '35.0.0'
           platform-version: '35'
-          cmake-version: '3.22.1'
-          ndk-version: '25.2.9519653'
 
       # 3. Setup Flutter
       - uses: subosito/flutter-action@v2
@@ -32,16 +30,12 @@ jobs:
       - run: yes | sdkmanager --licenses
       - run: flutter doctor --android-licenses
 
-      # 5. Fix country_code_picker issue
-      - name: Patch country_code_picker
-        run: |
-          sed -i "s/SelectionDialog(/SelectionDialog(hideHeaderText: false, headerAlignment: Alignment.center, /g" lib/features/auth/widgets/country_code_picker_widget.dart
-          sed -i "s/compileSdkVersion .*/compileSdkVersion 35/" android/app/build.gradle
-          sed -i "s/targetSdkVersion .*/targetSdkVersion 35/" android/app/build.gradle
+      # 5. Upgrade dependencies and clean (added these steps)
+      - run: flutter pub upgrade --major-versions
+      - run: flutter clean
 
       # 6. Build
       - run: flutter pub get
-      - run: flutter clean
       - run: flutter build apk --release
 
       # 7. Upload APK
