@@ -44,7 +44,7 @@ dependencies:
   cached_network_image: ^3.4.1
   audioplayers: ^6.0.0
   flutter_facebook_auth: ^7.1.2
-  google_sign_in: ^6.3.0
+  google_sign_in: ^6.2.2
   dotted_border: ^2.1.0
   share_plus: ^11.0.0
   scroll_to_index: ^3.0.1
