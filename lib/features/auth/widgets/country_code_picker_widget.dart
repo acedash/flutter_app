@@ -292,24 +292,27 @@ class CountryCodePickerWidgetState extends State<CountryCodePickerWidget> {
             horizontal: ResponsiveHelper.isDesktop(context) ? Dimensions.webScreenWidth / 4 : 0,
           ),
           child: SelectionDialog(
-            elements,
-            favoriteElements,
-            showCountryOnly: widget.showCountryOnly,
-            emptySearchBuilder: widget.emptySearchBuilder,
-            searchDecoration: widget.searchDecoration,
-            searchStyle: widget.searchStyle,
-            textStyle: widget.dialogTextStyle,
-            boxDecoration: widget.boxDecoration,
-            showFlag: widget.showFlagDialog ?? widget.showFlag,
-            flagWidth: widget.flagWidth,
-            size: widget.dialogSize,
-            backgroundColor: Theme.of(context).cardColor,
-            barrierColor: widget.barrierColor,
-            hideSearch: widget.hideSearch,
-            closeIcon: widget.closeIcon,
-            flagDecoration: widget.flagDecoration,
-             hideHeaderText: false
-          ),
+  elements: elements,  // Added named parameter
+  favoriteElements: favoriteElements,  // Added named parameter
+  showCountryOnly: widget.showCountryOnly,
+  emptySearchBuilder: widget.emptySearchBuilder,
+  searchDecoration: widget.searchDecoration,
+  searchStyle: widget.searchStyle,
+  textStyle: widget.dialogTextStyle,
+  boxDecoration: widget.boxDecoration,
+  showFlag: widget.showFlagDialog ?? widget.showFlag,
+  flagWidth: widget.flagWidth,
+  size: widget.dialogSize,
+  backgroundColor: Theme.of(context).cardColor,
+  barrierColor: widget.barrierColor,
+  hideSearch: widget.hideSearch,
+  closeIcon: widget.closeIcon,
+  flagDecoration: widget.flagDecoration,
+  hideHeaderText: false,
+  headerAlignment: Alignment.center,  // Added required parameter
+  searchOnChanged: (value) {},  // Added required parameter
+  scrollController: ScrollController(),  // Added required parameter
+),
         ),
       ),
     );
