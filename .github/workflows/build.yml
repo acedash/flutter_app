@@ -9,32 +9,29 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Setup Java 17
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '17'
 
-      # Setup Android SDK
       - uses: android-actions/setup-android@v3
         with:
           build-tools-version: '34.0.0'
           platform-version: '34'
 
-      # ✅ Setup Flutter with Dart >= 3.5.0
+      # ✅ Install Flutter 3.22.1 (includes Dart 3.5.0)
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.1'  # Must be >= 3.22.1 for Dart >= 3.5.0
+          flutter-version: '3.22.1'
           channel: 'stable'
 
-      # Install dependencies
-      - run: flutter pub get
+      # ✅ Print Flutter and Dart version to confirm
+      - run: flutter --version
 
-      # Build APK
+      - run: flutter pub get
       - run: flutter clean
       - run: flutter build apk --release
 
-      # Upload the APK
       - uses: actions/upload-artifact@v4
         with:
           name: app-release.apk
