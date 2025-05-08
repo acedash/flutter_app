@@ -18,17 +18,21 @@ jobs:
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          build-tools-version: '34.0.0'
+          platform-version: '34'
+          ndk-version: '25.2.9519653'
 
-      - name: Clone Flutter 3.22.1 SDK
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.22.1'
+          channel: 'stable'
+
+      - name: Accept licenses
         run: |
-          git clone https://github.com/flutter/flutter.git --branch 3.22.1 --depth 1 $HOME/flutter
-          echo "$HOME/flutter/bin" >> $GITHUB_PATH
-
-      - name: Check Flutter version (MUST show 3.22.1 / Dart 3.5.0)
-        run: flutter --version
-
-      - name: Precache dependencies
-        run: flutter precache
+          yes | sdkmanager --licenses
+          flutter doctor --android-licenses
 
       - name: Get dependencies
         run: flutter pub get
