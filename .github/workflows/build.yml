@@ -18,22 +18,19 @@ jobs:
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
-        with:
-          build-tools-version: '34.0.0'
-          platform-version: '34'
 
-      - name: Clone Flutter 3.22.1
+      - name: Clone Flutter 3.22.1 SDK
         run: |
-          git clone https://github.com/flutter/flutter.git --branch 3.22.1 --depth 1 flutter_sdk
-          echo "$GITHUB_WORKSPACE/flutter_sdk/bin" >> $GITHUB_PATH
+          git clone https://github.com/flutter/flutter.git --branch 3.22.1 --depth 1 $HOME/flutter
+          echo "$HOME/flutter/bin" >> $GITHUB_PATH
 
-      - name: Run flutter doctor
-        run: flutter doctor
+      - name: Check Flutter version (MUST show 3.22.1 / Dart 3.5.0)
+        run: flutter --version
 
-      - name: Precache required tools
+      - name: Precache dependencies
         run: flutter precache
 
-      - name: Install dependencies
+      - name: Get dependencies
         run: flutter pub get
 
       - name: Build APK
@@ -41,7 +38,7 @@ jobs:
           flutter clean
           flutter build apk --release
 
-      - name: Upload APK
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-release.apk
