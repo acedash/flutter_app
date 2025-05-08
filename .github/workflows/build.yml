@@ -7,43 +7,44 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Java
-        uses: actions/setup-java@v3
+      # 1. Setup Java 17
+      - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+      # 2. Setup Android SDK
+      - uses: android-actions/setup-android@v3
         with:
           build-tools-version: '34.0.0'
           platform-version: '34'
           ndk-version: '25.2.9519653'
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.22.1'
-          channel: 'stable'
-
-      - name: Accept licenses
+      # 3. Force Flutter 3.22.1 installation
+      - name: Install Flutter 3.22.1
         run: |
-          yes | sdkmanager --licenses
-          flutter doctor --android-licenses
+          git clone https://github.com/flutter/flutter.git -b 3.22.1 --depth 1 $HOME/flutter
+          echo "$HOME/flutter/bin" >> $GITHUB_PATH
+          flutter --version
 
-      - name: Get dependencies
-        run: flutter pub get
+      # 4. Verify Dart version (must show 3.5.0)
+      - name: Check Dart version
+        run: dart --version
 
-      - name: Build APK
-        run: |
-          flutter clean
-          flutter build apk --release
+      # 5. Accept licenses
+      - run: yes | sdkmanager --licenses
+      - run: flutter doctor --android-licenses
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+      # 6. Get dependencies
+      - run: flutter pub get
+
+      # 7. Build
+      - run: flutter build apk --release
+
+      # 8. Upload artifact
+      - uses: actions/upload-artifact@v4
         with:
           name: app-release.apk
           path: build/app/outputs/flutter-apk/app-release.apk
