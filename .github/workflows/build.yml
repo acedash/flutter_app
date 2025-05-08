@@ -22,18 +22,21 @@ jobs:
           build-tools-version: '34.0.0'
           platform-version: '34'
 
-      - name: Install Flutter 3.22.1 manually
+      - name: Clone Flutter 3.22.1
         run: |
           git clone https://github.com/flutter/flutter.git --branch 3.22.1 --depth 1 flutter_sdk
-          echo "$(pwd)/flutter_sdk/bin" >> $GITHUB_PATH
+          echo "$GITHUB_WORKSPACE/flutter_sdk/bin" >> $GITHUB_PATH
 
-      - name: Check Flutter version
-        run: flutter --version
+      - name: Run flutter doctor
+        run: flutter doctor
+
+      - name: Precache required tools
+        run: flutter precache
 
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Clean and build
+      - name: Build APK
         run: |
           flutter clean
           flutter build apk --release
