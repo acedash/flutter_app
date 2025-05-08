@@ -19,19 +19,22 @@ jobs:
           build-tools-version: '34.0.0'
           platform-version: '34'
 
-      # ✅ Install Flutter 3.22.1 (includes Dart 3.5.0)
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.22.1'
-          channel: 'stable'
+      # ✅ Manually download Flutter 3.22.1 to ensure Dart >= 3.5.0
+      - name: Install Flutter 3.22.1
+        run: |
+          git clone https://github.com/flutter/flutter.git --branch 3.22.1 --depth 1
+          echo "$GITHUB_WORKSPACE/flutter/bin" >> $GITHUB_PATH
 
-      # ✅ Print Flutter and Dart version to confirm
-      - run: flutter --version
+      # ✅ Confirm Flutter & Dart versions
+      - name: Check Flutter & Dart version
+        run: flutter --version
 
+      # Install dependencies & build
       - run: flutter pub get
       - run: flutter clean
       - run: flutter build apk --release
 
+      # Upload APK
       - uses: actions/upload-artifact@v4
         with:
           name: app-release.apk
