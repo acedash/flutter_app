@@ -5,35 +5,36 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
-      # 1. Setup Java 17
+      # Setup Java 17
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '17'
 
-      # 2. Setup Android SDK
+      # Setup Android SDK
       - uses: android-actions/setup-android@v3
         with:
           build-tools-version: '34.0.0'
           platform-version: '34'
 
-      # 3. Setup Flutter (Solution 1: Use 3.22.0 with compatible packages)
+      # ✅ Setup Flutter with Dart >= 3.5.0
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.1'
+          flutter-version: '3.22.1'  # Must be >= 3.22.1 for Dart >= 3.5.0
           channel: 'stable'
 
-      # 4. Get dependencies
+      # Install dependencies
       - run: flutter pub get
 
-      # 5. Build
+      # Build APK
       - run: flutter clean
       - run: flutter build apk --release
 
-      # 6. Upload APK
+      # Upload the APK
       - uses: actions/upload-artifact@v4
         with:
           name: app-release.apk
